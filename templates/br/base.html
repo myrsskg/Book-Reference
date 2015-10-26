@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <title>Reference Book</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css">
+</head>
+
+<body>
+<div id="header">
+    <h1>Телефонный справочник</h1>
+    <hr>
+</div>
+<div id="content">
+    <form action="." method="get">
+        <h3>Поиск контакта</h3>
+        <input type="text" size="20" placeholder="по Имени" name="name">
+        <input type="text" size="20" placeholder="по Телефону" name="phone">
+        <input type="text" size="20" placeholder="по Улице" name="street">
+        <input type="text" size="20" placeholder="по ID" name="id">
+        <button>Применить</button>
+        <a href="/br/">Сброс</a>
+    </form>
+    {% block content %}
+        <hr>
+        <h3>Результаты поиска</h3>
+        <table>
+            <tr>
+                <th>Имя (наименование)</th>
+                <th>Телефон</th>
+                <th>Адрес</th>
+                <th>Скайп</th>
+                <th>Веб</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for i in br %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.phone }}</td>
+                    <td>{{ i.city }}, {{ i.street }}{% if i.index %}, {{ i.index }}{% endif %} {% if i.flat %}, {{ i.flat }}{% endif %} </td>
+                    <td>{{ i.skype}}</td>
+                    <td>{{ i.web}}</td>
+                    <td><a href="/br/{{ i.id }}/">редактировать</a></td>
+                    <td><form method="POST" action="{% url 'br:vbr_del' i.id %}">{% csrf_token %}<input type="submit" value="DELETE"></form></td>
+                </tr>
+            {% endfor %}
+        </table>
+        <hr>
+        <a href="/br/add/">Добавить контакт</a>
+    {% endblock %}
+</div>
+<div id="footer">
+</div>
+</body>
+</html>
+
+
